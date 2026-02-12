@@ -1,0 +1,17 @@
+# Ignorar dependências
+node_modules/
+*/node_modules/
+
+# Ignorar arquivos de ambiente
+.env
+*/.env
+.DS_Store
+
+# Ignorar pastas de build
+dist/
+build/
+coverage/
+
+# Logs
+*.log
+npm-debug.log*
