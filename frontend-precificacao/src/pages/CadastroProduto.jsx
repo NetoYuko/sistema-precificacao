@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios'
 
 export default function CadastroProduto() {
     const [nome, setNome] = useState('');
@@ -14,6 +15,29 @@ export default function CadastroProduto() {
         setMargem('');
     };
 
+    const salvarProduto = async (e) => {
+        e.preventDefault();
+
+        const pacoteDeDados = {
+            nome: nome,
+            quantidade: Number(quantidade),
+            custoTotal: Number(custo.replace(',','.')),
+            margemLucro: Number(margem.replace(',','.')) 
+        };
+
+        try {
+            const resposta = await axios.post('http://localhost:3000/produtos', pacoteDeDados);
+
+            console.log("Sucesso!", resposta.data);
+            alert("Produto cadastrado com sucesso!");
+
+            limparFormulario();
+        } catch (erro) {
+            console.error("Erro, algo deu errado no servidor: ", erro);
+            alert("Erro ao conectar com a API. Verifique se o back-end está rodando!");
+        }
+    }
+
     return(
         <main className="min-h-screen bg-[#0d1117] flex flex-col items-center p-6 font-sans">
             {/* Titulo*/}
@@ -25,7 +49,7 @@ export default function CadastroProduto() {
             </header>
 
             {/* Formulário para cadastro de produtos */}
-            <form className="w-full max-w-xs flex flex-col gap-4">
+            <form onSubmit={salvarProduto} className="w-full max-w-xs flex flex-col gap-4">
                 <div className="flex flex-col gap-1">
                     <label htmlFor="nome" className="text-gray-400 text-sm">Nome do Produto:</label>
                     <input 
