@@ -20,9 +20,9 @@ export default function CadastroProduto() {
 
         const pacoteDeDados = {
             nome: nome,
+            custo_caixa: Number(custo.replace(',', '.')),
             quantidade: Number(quantidade),
-            custoTotal: Number(custo.replace(',','.')),
-            margemLucro: Number(margem.replace(',','.')) 
+            margem_lucro: Number(margem.replace(',', '.'))
         };
 
         try {
