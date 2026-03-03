@@ -54,32 +54,34 @@ app.get('/produtos', async (req, res) => {
  */
 app.post('/produtos', async (req, res) => {
     try {
-        const { nome, preco_custo, margem_lucro } = req.body;
+        const { nome, custo_caixa, quantidade, margem_lucro } = req.body;
 
         // VALIDAÇÃO
-        if (!nome || preco_custo === undefined || margem_lucro === undefined) {
-            return res.status(400).json({ erro: "Todos os campos (nome, custo, margem) são obrigatórios." });
+        if (!nome || custo_caixa === undefined || quantidade === undefined || margem_lucro === undefined) {
+            return res.status(400).json({ erro: "Todos os campos (nome, custo da caixa, quantidade, margem) são obrigatórios." });
         }
 
-        if (Number(preco_custo) < 0 || Number(margem_lucro) < 0) {
-            return res.status(422).json({ erro: "Valores monetários não podem ser negativos." });
+        if (Number(custo_caixa) < 0 || Number(quantidade) <= 0 || Number(margem_lucro) < 0) {
+            return res.status(422).json({ erro: "Valores inválidos. A quantidade deve ser maior que zero." });
         }
 
         // REGRA DE NEGÓCIO
-        const custo = Number(preco_custo);
+        const custoTotal = Number(custo_caixa);
+        const qtd = Number(quantidade);
         const margem = Number(margem_lucro);
-        
-        const valorLucro = custo * (margem / 100);
-        const precoVendaCalculado = custo + valorLucro;
+
+        const custoUnidade = custoTotal / qtd;
+        const valorLucro = custoUnidade * (margem / 100);
+        const precoFinalCalculado = custoUnidade + valorLucro
 
         // PERSISTÊNCIA
         const query = `
-            INSERT INTO produtos (nome, preco_custo, margem_lucro, preco_venda)
-            VALUES ($1, $2, $3, $4)
+            INSERT INTO produtos (nome, custo_caixa, quantidade, custo_unidade, margem_lucro, preco_venda)
+            VALUES ($1, $2, $3, $4, $5, $6)
             RETURNING *
         `;
         
-        const values = [nome, custo, margem, precoVendaCalculado];
+        const values = [nome, custoTotal, qtd, custoUnidade, margem, precoFinalCalculado];
         const resultado = await pool.query(query, values);
 
         // Retorna
