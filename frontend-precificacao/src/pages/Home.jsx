@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
@@ -11,15 +11,21 @@ export default function Home() {
       </header>
       {/* Container dos botões*/}
       <nav className="flex flex-col w-full max-w-2xs gap-4">
-        <Link to="/cadastro" className="flex items-center justify-center gap-3 bg-[#1a1d24] border border-gray-700 rounded-2xl p-5 w-full active:scale-95 transition-transform">
+        <Link
+          to="/cadastro"
+          className="flex items-center justify-center gap-3 bg-[#1a1d24] border border-gray-700 rounded-2xl p-5 w-full active:scale-95 transition-transform"
+        >
           <span className="text-emerald-500 font-bold text-xl">#</span>
           <span className="text-white font-semibold text-lg">Novo Produto</span>
         </Link>
-        <button className="flex items-center justify-center gap-3 bg-[#1a1d24] border border-gray-700 rounded-2xl p-5 w-full active:scale-95 transition-transform">
+        <Link
+          to="/produtos"
+          className="flex items-center justify-center gap-3 bg-[#1a1d24] border border-gray-700 rounded-2xl p-5 w-full active:scale-95 transition-transform"
+        >
           <span className="text-emerald-500 font-bold text-xl">#</span>
           <span className="text-white font-semibold text-lg">Ver Produtos</span>
-        </button>
+        </Link>
       </nav>
     </main>
-  )
+  );
 }
