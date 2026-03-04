@@ -122,10 +122,10 @@ export default function MeusProdutos() {
         )}
       </section>
 
-      <nav className="w-full max-w-sm pt-4 mt-auto">
-        <Link
-          to="/"
-          className="text-center block bg-transparent border border-gray-800 text-gray-400 text-sm rounded-xl py-2 px-8 active:scale-95 transition-transform hover:bg-[#1a1d24]"
+      <nav className="w-full max-w-sm pt-4 mt-auto flex justify-center">
+        <Link 
+          to="/" 
+          className="mt-4 mx-auto w-fit text-center bg-transparent border border-gray-800 text-gray-400 text-sm rounded-xl py-2 px-8 active:scale-95 transition-transform hover:bg-[#1a1d24]"
         >
           Voltar
         </Link>
