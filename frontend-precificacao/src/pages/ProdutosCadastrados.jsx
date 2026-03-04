@@ -1,0 +1,135 @@
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
+
+export default function MeusProdutos() {
+  const [produtos, setProdutos] = useState([]);
+  const [busca, setBusca] = useState([]);
+
+  //rodar o useEffect para buscar os produtos
+  useEffect(() => {
+    buscarProdutos();
+  }, []);
+
+  const buscarProdutos = async () => {
+    try {
+      //Faz o get na Api para trazer a lista de produtos
+      const resposta = await axios.get("http://localhost:3000/produtos");
+      setProdutos(resposta.data);
+    } catch (erro) {
+      console.error("Erro ao buscar produtos: ", erro);
+    }
+  };
+
+  //função auxiliar para formatar moeda
+  const formatarMoeda = (valor) => {
+    return Number(valor).toLocaleString("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    });
+  };
+
+  return (
+    <main className="h-[100dvh] bg-[#0d1117] flex flex-col items-center p-6 font-sans">
+      <header className="w-full max-x-xs mt-8 mb-8 text-center">
+        <h1 className="text-3xl font-bold text-white mb-2 flex items-center justify-center gap-2">
+          Sistema de Precificação
+        </h1>
+        <h2 className="text-lg font-bold text-emerald-600">Meus produtos</h2>
+      </header>
+
+      {/* Barra de Busca */}
+      <search className="w-full max-w-sm mb-6">
+        <label htmlFor="busca" className="sr-only">
+          Buscar produto
+        </label>
+        <input
+          type="text"
+          placeholder="Buscar produto..."
+          value={busca}
+          onChange={(e) => setBusca(e.target.value)}
+          className="w-full bg-[#1a1d24] border border-gray-800 rounded-xl p-3 text-white focus:outline-none focus:border-emerald-600 transition-colors"
+        />
+      </search>
+
+      {/* Lista de Produtos (Cards) */}
+      <section className="w-full max-w-sm flex-1 overflow-y-auto pb-4">
+        {produtos.length === 0 ? (
+          <p className="text-gray-400 text-center mt-4">
+            Nenhum produto encontrado.
+          </p>
+        ) : (
+          <ul className="flex flex-col gap-4">
+            {produtos.map((produto) => (
+              <li
+                key={produto.id}
+                className="bg-[#1a1d24] border border-gray-800 rounded-2xl p-4 shadow-lg"
+              >
+                <article className="flex flex-col h-full">
+                  <header className="flex justify-between items-start mb-2 gap-2">
+                    <h3 className="text-white font-bold text-lg leading-tight flex-1 line-clamp-2">
+                      {produto.nome}
+                    </h3>
+                    <div className="flex gap-5 shrink-0 mt-1">
+                      <button className="text-blue-400 text-sm font-semibold active:scale-95 transition-transform">
+                        Editar
+                      </button>
+                      <button className="text-red-500 text-sm font-semibold active:scale-95 transition-transform">
+                        Excluir
+                      </button>
+                    </div>
+                  </header>
+
+                  <dl className="grid grid-cols-2 gap-y-2 gap-x-4 text-xs text-gray-400 mb-3">
+                    <div className="flex gap-1">
+                      <dt className="font-medium">Caixa:</dt>
+                      <dd className="text-gray-300 m-0">
+                        {formatarMoeda(produto.custo_caixa)}
+                      </dd>
+                    </div>
+                    <div className="flex gap-1">
+                      <dt className="font-medium">Qtd:</dt>
+                      <dd className="text-gray-300 m-0">
+                        {produto.quantidade} un
+                      </dd>
+                    </div>
+                    <div className="flex gap-1">
+                      <dt className="font-medium">Custo Unid:</dt>
+                      <dd className="text-gray-300 m-0">
+                        {formatarMoeda(produto.custo_unidade)}
+                      </dd>
+                    </div>
+                    <div className="flex gap-1">
+                      <dt className="font-medium">Margem:</dt>
+                      <dd className="text-gray-300 m-0">
+                        {produto.margem_lucro}%
+                      </dd>
+                    </div>
+                  </dl>
+
+                  <footer className="mt-auto pt-3 border-t border-gray-800 flex justify-between items-center">
+                    <span className="text-gray-400 text-sm font-medium">
+                      Preço de Venda:
+                    </span>
+                    <strong className="text-2xl font-bold text-emerald-500">
+                      {formatarMoeda(produto.preco_venda)}
+                    </strong>
+                  </footer>
+                </article>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+
+      <nav className="w-full max-w-sm pt-4 mt-auto">
+        <Link
+          to="/"
+          className="text-center block bg-transparent border border-gray-800 text-gray-400 text-sm rounded-xl py-2 px-8 active:scale-95 transition-transform hover:bg-[#1a1d24]"
+        >
+          Voltar
+        </Link>
+      </nav>
+    </main>
+  );
+}
