@@ -112,6 +112,46 @@ app.delete('/produtos/:id', async (req, res) => {
     }
 });
 
+// ROTA PARA ATUALZIAR PRODUTO (EDITAR)
+app.put('/produtos/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { nome, custo_caixa, quantidade, margem_lucro } = req.body;
+
+        if (!nome || custo_caixa === undefined || quantidade === undefined || margem_lucro === undefined) {
+            return res.status(400).json({ erro: "Todos os campos são obrigatórios para edição."});
+        }
+
+        //refaz o calculado quando produto for editado
+        const custoTotal = Number(custo_caixa);
+        const qtd = Number(quantidade);
+        const margem = Number(margem_lucro);
+
+        const custoUnidade = custoTotal / qtd;
+        const valorLucro = custoUnidade * (margem / 100);
+        const precoFinalCalculado = custoUnidade + valorLucro;
+
+        const query = `
+            UPDATE produtos 
+            SET nome = $1, custo_caixa = $2, quantidade = $3, custo_unidade = $4, margem_lucro = $5, preco_venda = $6
+            WHERE id = $7
+            RETURNING *
+        `;
+
+        const values = [nome, custoTotal, qtd, custoUnidade, margem, precoFinalCalculado, id];
+        const resultado = await pool.query(query, values);
+
+        if(resultado.rowCount === 0) {
+            return res.status(404).json({ erro: "Produto não encontrado."});
+        }
+
+        res.status(200).json(resultado.rows[0]);
+    } catch (error) {
+        console.error('Erro ao atualizar produto:', error);
+        res.status(500).json({ erro: "Erro ao atualizar no banco de dados."});
+    }
+});
+
 // INICIALIZAÇÃO
 app.listen(PORT, () => {
     console.log(`🚀 Servidor rodando na porta ${PORT}`);
