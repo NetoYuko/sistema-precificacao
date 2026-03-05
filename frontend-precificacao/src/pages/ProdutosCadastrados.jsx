@@ -4,7 +4,7 @@ import axios from "axios";
 
 export default function MeusProdutos() {
   const [produtos, setProdutos] = useState([]);
-  const [busca, setBusca] = useState([]);
+  const [busca, setBusca] = useState('');
 
   const [produtoEmEdicao, setProdutoEmEdicao] = useState(null);
 
@@ -13,7 +13,7 @@ export default function MeusProdutos() {
     buscarProdutos();
   }, []);
 
-  //Função para buscar produtos
+  //Função para buscar produtos no servidor
   const buscarProdutos = async () => {
     try {
       //Faz o get na Api para trazer a lista de produtos
@@ -88,6 +88,11 @@ export default function MeusProdutos() {
     });
   };
 
+  //Função para buscar produtos
+  const produtosFiltrados = produtos.filter((produto) => {
+    return produto.nome.toLowerCase().includes(busca.toLowerCase());
+  });
+
   return (
     <main className="h-[100dvh] bg-[#0d1117] flex flex-col items-center p-6 font-sans">
       <header className="w-full max-x-xs mt-8 mb-8 text-center">
@@ -111,13 +116,13 @@ export default function MeusProdutos() {
       </search>
       {/* Lista de Produtos (Cards) */}
       <section className="w-full max-w-sm flex-1 overflow-y-auto pb-4">
-        {produtos.length === 0 ? (
+        {produtosFiltrados.length === 0 ? (
           <p className="text-gray-400 text-center mt-4">
             Nenhum produto encontrado.
           </p>
         ) : (
           <ul className="flex flex-col gap-4">
-            {produtos.map((produto) => (
+            {produtosFiltrados.map((produto) => (
               <li
                 key={produto.id}
                 className="bg-[#1a1d24] border border-gray-800 rounded-2xl p-4 shadow-lg"
