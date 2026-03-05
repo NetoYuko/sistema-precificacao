@@ -11,6 +11,7 @@ export default function MeusProdutos() {
     buscarProdutos();
   }, []);
 
+  //Função para buscar produtos
   const buscarProdutos = async () => {
     try {
       //Faz o get na Api para trazer a lista de produtos
@@ -18,6 +19,21 @@ export default function MeusProdutos() {
       setProdutos(resposta.data);
     } catch (erro) {
       console.error("Erro ao buscar produtos: ", erro);
+    }
+  };
+
+  //Função para excluir produto
+  const excluirProduto = async (id) => {
+    const confirmar = window.confirm("Tem certeza que deseja excluir este produto?");
+    if (!confirmar) return;
+
+    try {
+      await axios.delete(`http://localhost:3000/produtos/${id}`);
+
+      setProdutos(produtos.filter(produto => produto.id !== id));
+    } catch (erro) {
+      console.error("Erro ao excluir:", erro);
+      alert("Erro ao excluir o produto. Verifique se o back-end está rodando.");
     }
   };
 
@@ -71,10 +87,13 @@ export default function MeusProdutos() {
                       {produto.nome}
                     </h3>
                     <div className="flex gap-5 shrink-0 mt-1">
-                      <button className="text-blue-400 text-sm font-semibold active:scale-95 transition-transform">
+                      <button 
+                        className="text-blue-400 text-sm font-semibold active:scale-95 transition-transform">
                         Editar
                       </button>
-                      <button className="text-red-500 text-sm font-semibold active:scale-95 transition-transform">
+                      <button 
+                        onClick={() => excluirProduto(produto.id)}
+                        className="text-red-500 text-sm font-semibold active:scale-95 transition-transform">
                         Excluir
                       </button>
                     </div>
