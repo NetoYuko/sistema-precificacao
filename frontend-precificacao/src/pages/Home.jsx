@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { PlusCircle, ListChecks } from 'lucide-react';
 
 export default function Home() {
   return (
@@ -15,14 +16,14 @@ export default function Home() {
           to="/cadastro"
           className="flex items-center justify-center gap-3 bg-[#1a1d24] border border-gray-700 rounded-2xl p-5 w-full active:scale-95 transition-transform"
         >
-          <span className="text-emerald-500 font-bold text-xl">#</span>
+          <PlusCircle className="text-emerald-500 w-6 h-6" />
           <span className="text-white font-semibold text-lg">Novo Produto</span>
         </Link>
         <Link
           to="/produtos"
           className="flex items-center justify-center gap-3 bg-[#1a1d24] border border-gray-700 rounded-2xl p-5 w-full active:scale-95 transition-transform"
         >
-          <span className="text-emerald-500 font-bold text-xl">#</span>
+          <ListChecks className="text-emerald-500 w-6 h-6" />
           <span className="text-white font-semibold text-lg">Ver Produtos</span>
         </Link>
       </nav>
