@@ -153,7 +153,9 @@ app.put('/produtos/:id', async (req, res) => {
 });
 
 // INICIALIZAÇÃO
-app.listen(PORT, () => {
-    console.log(`🚀 Servidor rodando na porta ${PORT}`);
-    console.log(`🔗 Acesso: http://localhost:${PORT}/produtos`);
-});
+// app.listen(PORT, () => {
+//     console.log(`🚀 Servidor rodando na porta ${PORT}`);
+//     console.log(`🔗 Acesso: http://localhost:${PORT}/produtos`);
+// });
+
+module.exports = app;
