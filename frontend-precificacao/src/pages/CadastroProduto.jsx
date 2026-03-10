@@ -27,7 +27,7 @@ export default function CadastroProduto() {
 
     try {
       const resposta = await axios.post(
-        "http://localhost:3000/produtos",
+        "https://sistema-precificacao-chi.vercel.app/produtos",
         pacoteDeDados,
       );
 
