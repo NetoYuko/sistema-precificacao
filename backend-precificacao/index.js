@@ -18,14 +18,21 @@ const PORT = process.env.SERVER_PORT || 3000;
 app.use(express.json());
 app.use(cors());
 
+const pool = new Pool ({
+    connectionString: process.env.SERVER_PORT,
+    ssl: {
+        rejectUnauthorized: false
+    }
+})
+
 // CONEXÃO COM BANCO DE DADOS
-const pool = new Pool({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
-    port: 5432,
-});
+// const pool = new Pool({
+//     host: process.env.DB_HOST,
+//     user: process.env.DB_USER,
+//     password: process.env.DB_PASS,
+//     database: process.env.DB_NAME,
+//     port: 5432,
+// });
 
 // Teste de conexão ao iniciar
 pool.connect()
