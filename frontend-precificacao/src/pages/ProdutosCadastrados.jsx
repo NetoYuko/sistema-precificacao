@@ -32,7 +32,7 @@ export default function MeusProdutos() {
     if (!confirmar) return;
 
     try {
-      await axios.delete(`https://sistema-precificacao-phi.vercel.app/produtos${id}`);
+      await axios.delete(`https://sistema-precificacao-phi.vercel.app/produtos/${id}`);
 
       setProdutos(produtos.filter((produto) => produto.id !== id));
     } catch (erro) {
@@ -68,7 +68,7 @@ export default function MeusProdutos() {
 
     try {
       await axios.put(
-        `https://sistema-precificacao-phi.vercel.app/produtos${produtoEmEdicao.id}`,
+        `https://sistema-precificacao-phi.vercel.app/produtos/${produtoEmEdicao.id}`,
         pacoteDeDados,
       );
       buscarProdutos();
