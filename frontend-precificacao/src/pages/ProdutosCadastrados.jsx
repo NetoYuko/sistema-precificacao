@@ -17,7 +17,7 @@ export default function MeusProdutos() {
   const buscarProdutos = async () => {
     try {
       //Faz o get na Api para trazer a lista de produtos
-      const resposta = await axios.get("https://sistema-precificacao-phi.vercel.app/");
+      const resposta = await axios.get("https://sistema-precificacao-phi.vercel.app/produtos");
       setProdutos(resposta.data);
     } catch (erro) {
       console.error("Erro ao buscar produtos: ", erro);
@@ -32,7 +32,7 @@ export default function MeusProdutos() {
     if (!confirmar) return;
 
     try {
-      await axios.delete(`https://sistema-precificacao-phi.vercel.app/${id}`);
+      await axios.delete(`https://sistema-precificacao-phi.vercel.app/produtos${id}`);
 
       setProdutos(produtos.filter((produto) => produto.id !== id));
     } catch (erro) {
@@ -68,7 +68,7 @@ export default function MeusProdutos() {
 
     try {
       await axios.put(
-        `https://sistema-precificacao-phi.vercel.app/${produtoEmEdicao.id}`,
+        `https://sistema-precificacao-phi.vercel.app/produtos${produtoEmEdicao.id}`,
         pacoteDeDados,
       );
       buscarProdutos();
